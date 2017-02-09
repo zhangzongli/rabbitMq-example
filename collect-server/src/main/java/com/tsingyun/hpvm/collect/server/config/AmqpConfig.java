@@ -25,5 +25,15 @@ public class AmqpConfig {
     public Queue fooQueue1() {
         return new Queue("hpvm.data1");
     }
+
+    @Bean
+    public Queue queue() {
+        return new Queue("queue");
+    }
+
+    @Bean
+    public Queue queue1() {
+        return new Queue("routingkey");
+    }
 }
 

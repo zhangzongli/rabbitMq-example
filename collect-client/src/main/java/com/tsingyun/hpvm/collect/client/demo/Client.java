@@ -23,12 +23,12 @@ public class Client {
         @Autowired
         private RabbitTemplate rabbitTemplate;
 
-        @Scheduled(fixedDelay = 10000L)
+        @Scheduled(fixedDelay = 1000L)
         public void send() {
-            this.rabbitTemplate.convertAndSend("hpvm.data", "hello");
-            this.rabbitTemplate.convertAndSend("hpvm.data1", "hello1");
+            this.rabbitTemplate.convertAndSend("queue", "hello123");
+//            this.rabbitTemplate.convertAndSend("hpvm.data1", "hello1");
 //            this.rabbitTemplate.convertAndSend("hpvm.data", new TestModel("hello", "world"));
-            System.out.println(this.rabbitTemplate.convertSendAndReceive("hpvm.data", 100));
+//            System.out.println(this.rabbitTemplate.convertSendAndReceive("hpvm.data", 100));
         }
     }
 }
