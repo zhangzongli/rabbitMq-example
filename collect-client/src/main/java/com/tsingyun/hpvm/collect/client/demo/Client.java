@@ -25,7 +25,7 @@ public class Client {
 
         @Scheduled(fixedDelay = 1000L)
         public void send() {
-            this.rabbitTemplate.convertAndSend("queue", "hello123");
+            this.rabbitTemplate.convertAndSend("exchange", "", "hello456");
 //            this.rabbitTemplate.convertAndSend("hpvm.data1", "hello1");
 //            this.rabbitTemplate.convertAndSend("hpvm.data", new TestModel("hello", "world"));
 //            System.out.println(this.rabbitTemplate.convertSendAndReceive("hpvm.data", 100));

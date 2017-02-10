@@ -32,6 +32,21 @@ public class AmqpConfig {
     }
 
     @Bean
+    public Queue queueA() {
+        return new Queue("queueA");
+    }
+
+    @Bean
+    public Queue queueB() {
+        return new Queue("queueB");
+    }
+
+    @Bean
+    public Queue queueC() {
+        return new Queue("queueC");
+    }
+
+    @Bean
     public Queue queue1() {
         return new Queue("routingkey");
     }

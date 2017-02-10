@@ -18,19 +18,39 @@ public class AmqpConfig {
         return new Jackson2JsonMessageConverter();
     }
 
-//    @Bean
-//    Queue queue() {
-//        return new Queue("queue", true);
-//    }
-//
+    @Bean
+    Queue queueA() {
+        return new Queue("queueA", true);
+    }
+
+    @Bean
+    Queue queueB() {
+        return new Queue("queueB", true);
+    }
+
+    @Bean
+    Queue queueC() {
+        return new Queue("queueC", true);
+    }
+
 //    @Bean
 //    TopicExchange exchange() {
 //        return new TopicExchange("exchange");
 //    }
-//
-//    @Bean
-//    Binding binding(Queue queue, TopicExchange exchange) {
-//        return BindingBuilder.bind(queue).to(exchange).with("routingkey");
-//    }
+
+    @Bean
+    FanoutExchange exchange() {
+        return new FanoutExchange("exchange");
+    }
+
+    @Bean
+    Binding bindingA(Queue queueA, FanoutExchange exchange) {
+        return BindingBuilder.bind(queueA).to(exchange);
+    }
+
+    @Bean
+    Binding bindingB(Queue queueB, FanoutExchange exchange) {
+        return BindingBuilder.bind(queueB).to(exchange);
+    }
 
 }

@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by zhangzl on 2017/2/7.
  */
 @Component
-@RabbitListener(queues = "queue")
+@RabbitListener(queues = {"queueA", "queueB"})
 public class DataCollectListener {
 
     @RabbitHandler
