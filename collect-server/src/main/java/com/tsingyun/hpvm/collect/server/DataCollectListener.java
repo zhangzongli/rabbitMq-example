@@ -10,9 +10,10 @@ import java.util.Date;
  * Created by zhangzl on 2017/2/7.
  */
 @Component
+@RabbitListener(queues = "hpvm.data")
 public class DataCollectListener {
 
-    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "hpvm.data", durable = "false", autoDelete = "false"), exchange = @Exchange(value = "exchange", durable = "false", type = "topic")))
+//    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "hpvm.data", durable = "false", autoDelete = "false"), exchange = @Exchange(value = "exchange", durable = "false", type = "topic")))
     @RabbitHandler
     public void process(@Payload String foo) {
         System.out.println(new Date() + ": " + foo);

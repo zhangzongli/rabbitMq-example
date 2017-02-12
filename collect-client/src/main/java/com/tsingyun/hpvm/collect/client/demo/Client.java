@@ -26,7 +26,7 @@ public class Client {
 
         @Scheduled(fixedDelay = 1000L)
         public void send() {
-            this.rabbitMessagingTemplate.convertAndSend("exchange", "hpvm.data", "hello123");
+            this.rabbitMessagingTemplate.convertAndSend("exchange", "", "hello123");
 
             // TODO: 2017/2/9 多个多列绑定交换器暂未实现
 //            this.rabbitMessagingTemplate.convertAndSend("exchange1", "hpvm.data", 456);

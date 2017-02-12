@@ -18,19 +18,19 @@ import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 @Configuration
 public class AmqpConfig {
 
-    @Bean
-    RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
-        return new RabbitAdmin(connectionFactory);
-    }
-
-    @Bean
-    ConnectionFactory connectionFactory(){
-        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory();
-        cachingConnectionFactory.setHost("localhost");
-        cachingConnectionFactory.setUsername("guest");
-        cachingConnectionFactory.setPassword("guest");
-        return new CachingConnectionFactory();
-    }
+//    @Bean
+//    RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
+//        return new RabbitAdmin(connectionFactory);
+//    }
+//
+//    @Bean
+//    ConnectionFactory connectionFactory(){
+//        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory();
+//        cachingConnectionFactory.setHost("localhost");
+//        cachingConnectionFactory.setUsername("guest");
+//        cachingConnectionFactory.setPassword("guest");
+//        return cachingConnectionFactory;
+//    }
 
 //    @Bean
 //    MessageConverter jackson2JsonMessageConverter() {
@@ -44,16 +44,22 @@ public class AmqpConfig {
     }
 
     @Bean
-    Queue queueMessage() {
+    Queue queue() {
         Queue queue = new Queue("hpvm.data", true, false, false);
         return queue;
     }
 
     @Bean
-    TopicExchange exchange() {
-        TopicExchange topicExchange = new TopicExchange("exchange");
-        return topicExchange;
+    FanoutExchange fanoutExchange() {
+        FanoutExchange fanoutExchange = new FanoutExchange("fanoutExchange");
+        return fanoutExchange;
     }
+
+//    @Bean
+//    TopicExchange exchange() {
+//        TopicExchange topicExchange = new TopicExchange("exchange");
+//        return topicExchange;
+//    }
 
     // TODO: 2017/2/9 多个多列绑定交换器暂未实现
 //    @Bean
@@ -63,9 +69,8 @@ public class AmqpConfig {
 //    }
 
     @Bean
-    Binding bindingExchangeMessage(Queue queueMessage, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
-        Binding binding = BindingBuilder.bind(queueMessage).to(exchange).with("hpvm.data");
-        rabbitAdmin.declareBinding(binding);
+    Binding bindingExchangeMessage(Queue queue, FanoutExchange exchange) {
+        Binding binding = BindingBuilder.bind(queue).to(exchange);
         return binding;
     }
 
@@ -77,21 +82,21 @@ public class AmqpConfig {
 //        return binding;
 //    }
 
-    @Bean
-    public RabbitTemplate rabbitTemplate() {
-        RabbitTemplate template = new RabbitTemplate(connectionFactory());
-        //The routing key is set to the name of the queue by the broker for the default exchange.
-        template.setRoutingKey("hpvm.data");
-        //Where we will synchronously receive messages from
-        template.setQueue("hpvm.data");
-        return template;
-    }
-
-    @Bean
-    public RabbitMessagingTemplate rabbitMessagingTemplate(RabbitTemplate rabbitTemplate) {
-        RabbitMessagingTemplate rabbitMessagingTemplate = new RabbitMessagingTemplate();
-        rabbitMessagingTemplate.setMessageConverter(jackson2Converter());
-        rabbitMessagingTemplate.setRabbitTemplate(rabbitTemplate);
-        return rabbitMessagingTemplate;
-    }
+//    @Bean
+//    public RabbitTemplate rabbitTemplate() {
+//        RabbitTemplate template = new RabbitTemplate(connectionFactory());
+//        //The routing key is set to the name of the queue by the broker for the default exchange.
+//        template.setRoutingKey("hpvm.data");
+//        //Where we will synchronously receive messages from
+//        template.setQueue("hpvm.data");
+//        return template;
+//    }
+//
+//    @Bean
+//    public RabbitMessagingTemplate rabbitMessagingTemplate(RabbitTemplate rabbitTemplate) {
+//        RabbitMessagingTemplate rabbitMessagingTemplate = new RabbitMessagingTemplate();
+//        rabbitMessagingTemplate.setMessageConverter(jackson2Converter());
+//        rabbitMessagingTemplate.setRabbitTemplate(rabbitTemplate);
+//        return rabbitMessagingTemplate;
+//    }
 }

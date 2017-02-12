@@ -27,10 +27,10 @@ public class AmqpConfig {
         return new Queue("hpvm.data",true);
     }
 
-    @Bean
-    public Queue fooQueue1() {
-        return new Queue("hpvm.data1", true);
-    }
+//    @Bean
+//    public Queue fooQueue1() {
+//        return new Queue("hpvm.data1", true);
+//    }
 
 //    @Bean
 //    ConnectionFactory connectionFactory(){
@@ -38,7 +38,7 @@ public class AmqpConfig {
 //        cachingConnectionFactory.setHost("localhost");
 //        cachingConnectionFactory.setUsername("guest");
 //        cachingConnectionFactory.setPassword("guest");
-//        return new CachingConnectionFactory();
+//        return cachingConnectionFactory;
 //    }
 //
 //    @Bean
