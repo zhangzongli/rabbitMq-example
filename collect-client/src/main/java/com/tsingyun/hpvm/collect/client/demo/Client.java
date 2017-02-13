@@ -1,7 +1,9 @@
 package com.tsingyun.hpvm.collect.client.demo;
 
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,19 +24,31 @@ public class Client {
     public class Sender {
 
         @Autowired
-        private RabbitMessagingTemplate rabbitMessagingTemplate;
+        private RabbitTemplate rabbitTemplate;
+
+        @Autowired
+        private Jackson2JsonMessageConverter converter;
 
         @Scheduled(fixedDelay = 1000L)
         public void send() {
-            this.rabbitMessagingTemplate.convertAndSend("exchange", "", "hello123");
+            sendToOneKey();
+            sentToMapkeyWhereAll();
+        }
 
-            // TODO: 2017/2/9 多个多列绑定交换器暂未实现
-//            this.rabbitMessagingTemplate.convertAndSend("exchange1", "hpvm.data", 456);
-            
-            
-//            this.rabbitTemplate.convertAndSend("hpvm.data1", "hello1");
-//            this.rabbitTemplate.convertAndSend("hpvm.data", new TestModel("hello", "world"));
-//            System.out.println(this.rabbitTemplate.convertSendAndReceive("hpvm.data", 100));
+        public void sendToOneKey() {
+            MessageProperties properties = new MessageProperties();
+            properties.setContentType("application/json");
+            properties.setHeader("a","1");
+            rabbitTemplate.setExchange("headersExchange");
+            rabbitTemplate.send("", converter.toMessage("hello.headers.one.key", properties));
+        }
+
+        public void sentToMapkeyWhereAll() {
+            MessageProperties properties = new MessageProperties();
+            properties.setContentType("application/json");
+            properties.setHeader("b","2");
+            rabbitTemplate.setExchange("headersExchange");
+            rabbitTemplate.send("", converter.toMessage("hello.headers.mapkey.whereAll", properties));
         }
     }
 }

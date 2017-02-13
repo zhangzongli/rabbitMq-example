@@ -8,9 +8,14 @@ import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by zhangzl on 2017/2/7.
@@ -32,33 +37,52 @@ public class AmqpConfig {
 //        return cachingConnectionFactory;
 //    }
 
-//    @Bean
-//    MessageConverter jackson2JsonMessageConverter() {
-//        return new Jackson2JsonMessageConverter();
-//    }
-
     @Bean
-    public MappingJackson2MessageConverter jackson2Converter() {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        return converter;
+    MessageConverter jackson2JsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
     }
 
-    @Bean
+//    @Bean
+//    public MappingJackson2MessageConverter jackson2Converter() {
+//        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+//        return converter;
+//    }
+
+    @Bean(name = "hpvm.data")
     Queue queue() {
         Queue queue = new Queue("hpvm.data", true, false, false);
         return queue;
     }
 
-    @Bean
-    FanoutExchange fanoutExchange() {
-        FanoutExchange fanoutExchange = new FanoutExchange("fanoutExchange");
-        return fanoutExchange;
+    @Bean(name = "hpvm.data.B")
+    Queue queueB() {
+        Queue queue = new Queue("hpvm.data.B", true, false, false);
+        return queue;
     }
+
+
+//    @Bean
+//    FanoutExchange fanoutExchange() {
+//        FanoutExchange fanoutExchange = new FanoutExchange("fanoutExchange");
+//        return fanoutExchange;
+//    }
 
 //    @Bean
 //    TopicExchange exchange() {
-//        TopicExchange topicExchange = new TopicExchange("exchange");
+//        TopicExchange topicExchange = new TopicExchange("topicExchange");
 //        return topicExchange;
+//    }
+
+    @Bean
+    HeadersExchange headersExchange() {
+        HeadersExchange headersExchange = new HeadersExchange("headersExchange");
+        return headersExchange;
+    }
+
+//    @Bean
+//    DirectExchange directExchange() {
+//        DirectExchange directExchange = new DirectExchange("directExchange");
+//        return directExchange;
 //    }
 
     // TODO: 2017/2/9 多个多列绑定交换器暂未实现
@@ -69,8 +93,17 @@ public class AmqpConfig {
 //    }
 
     @Bean
-    Binding bindingExchangeMessage(Queue queue, FanoutExchange exchange) {
-        Binding binding = BindingBuilder.bind(queue).to(exchange);
+    Binding bindingExchangeMessage(@Qualifier("hpvm.data") Queue queue, HeadersExchange exchange) {
+        Binding binding = BindingBuilder.bind(queue).to(exchange).where("a").matches("1");
+        return binding;
+    }
+
+    @Bean
+    Binding bindingExchangeMessageB(@Qualifier("hpvm.data.B")Queue queue, HeadersExchange exchange) {
+        Map<String, Object> keyMap = new HashMap<String, Object>();
+        keyMap.put("b","2");
+        keyMap.put("c","3");
+        Binding binding = BindingBuilder.bind(queue).to(exchange).whereAll(keyMap).match();
         return binding;
     }
 

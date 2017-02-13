@@ -1,5 +1,7 @@
 package com.tsingyun.hpvm.collect.server.config;
 
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -19,13 +21,20 @@ import javax.sound.midi.Receiver;
 public class AmqpConfig {
     @Bean
     MessageConverter jackson2JsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
+        MessageConverter messageConverter = new Jackson2JsonMessageConverter();
+        return messageConverter;
     }
 
     @Bean
     public Queue fooQueue() {
         return new Queue("hpvm.data",true);
     }
+
+    @Bean
+    public Queue fooQueueB() {
+        return new Queue("hpvm.data.B",true);
+    }
+
 
 //    @Bean
 //    public Queue fooQueue1() {
