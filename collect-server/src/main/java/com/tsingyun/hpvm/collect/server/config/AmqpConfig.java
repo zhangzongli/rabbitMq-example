@@ -35,27 +35,5 @@ public class AmqpConfig {
         return new Queue("hpvm.data.B",true);
     }
 
-
-//    @Bean
-//    public Queue fooQueue1() {
-//        return new Queue("hpvm.data1", true);
-//    }
-
-//    @Bean
-//    ConnectionFactory connectionFactory(){
-//        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory();
-//        cachingConnectionFactory.setHost("localhost");
-//        cachingConnectionFactory.setUsername("guest");
-//        cachingConnectionFactory.setPassword("guest");
-//        return cachingConnectionFactory;
-//    }
-//
-//    @Bean
-//    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory) {
-//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-//        container.setConnectionFactory(connectionFactory);
-//        container.setQueueNames("hpvm.data");
-//        return container;
-//    }
 }
 
