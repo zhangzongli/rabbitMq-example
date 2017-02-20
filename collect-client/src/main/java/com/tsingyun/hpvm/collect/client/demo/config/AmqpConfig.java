@@ -28,36 +28,43 @@ public class AmqpConfig {
         return new Jackson2JsonMessageConverter();
     }
 
-    @Bean(name = "hpvm.data")
-    Queue queue() {
-        Queue queue = new Queue("hpvm.data", true, false, false);
-        return queue;
-    }
+//    @Bean(name = "hpvm.data")
+//    Queue queue() {
+//        Queue queue = new Queue("hpvm.data", true, false, false);
+//        return queue;
+//    }
 
-    @Bean(name = "hpvm.data.B")
-    Queue queueB() {
-        Queue queue = new Queue("hpvm.data.B", true, false, false);
-        return queue;
-    }
-
-    @Bean
-    HeadersExchange headersExchange() {
-        HeadersExchange headersExchange = new HeadersExchange("headersExchange");
-        return headersExchange;
-    }
+//    @Bean(name = "hpvm.data.B")
+//    Queue queueB() {
+//        Queue queue = new Queue("hpvm.data.B", true, false, false);
+//        return queue;
+//    }
 
     @Bean
-    Binding bindingExchangeMessage(@Qualifier("hpvm.data") Queue queue, HeadersExchange exchange) {
-        Binding binding = BindingBuilder.bind(queue).to(exchange).where("a").matches("1");
-        return binding;
+    DirectExchange directExchange() {
+        DirectExchange directExchange = new DirectExchange("directExchange");
+        return directExchange;
     }
+//
+//    @Bean
+//    Binding bindingExchangeMessage(@Qualifier("hpvm.data") Queue queue, TopicExchange exchange) {
+//        Binding binding = BindingBuilder.bind(queue).to(exchange).with("a.*.*");
+//        return binding;
+//    }
 
-    @Bean
-    Binding bindingExchangeMessageB(@Qualifier("hpvm.data.B")Queue queue, HeadersExchange exchange) {
-        Map<String, Object> keyMap = new HashMap<String, Object>();
-        keyMap.put("b","2");
-        keyMap.put("c","3");
-        Binding binding = BindingBuilder.bind(queue).to(exchange).whereAll(keyMap).match();
-        return binding;
-    }
+//    @Bean
+//    Binding bindingExchangeMessageB(@Qualifier("hpvm.data.B") Queue queue, TopicExchange exchange) {
+//        Binding binding = BindingBuilder.bind(queue).to(exchange).with("a.#");
+//        return binding;
+//    }
+
+//    @Bean
+//    Binding bindingExchangeMessageB(@Qualifier("hpvm.data.B")Queue queue, HeadersExchange exchange) {
+//        Map<String, Object> keyMap = new HashMap<String, Object>();
+//        keyMap.put("b","2");
+//        keyMap.put("c","3");
+//        Binding binding = BindingBuilder.bind(queue).to(exchange).whereAll(keyMap).match();
+//        return binding;
+//    }
+
 }

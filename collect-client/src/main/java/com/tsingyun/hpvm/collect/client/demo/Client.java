@@ -23,32 +23,17 @@ public class Client {
 
     public class Sender {
 
-        @Autowired
         private RabbitTemplate rabbitTemplate;
 
         @Autowired
-        private Jackson2JsonMessageConverter converter;
-
-        @Scheduled(fixedDelay = 1000L)
-        public void send() {
-            sendToOneKey();
-            sentToMapkeyWhereAll();
+        private void setRabbitTemplate(RabbitTemplate rabbitTemplate) {
+            this.rabbitTemplate = rabbitTemplate;
+            rabbitTemplate.setExchange("directExchange");
         }
 
-        public void sendToOneKey() {
-            MessageProperties properties = new MessageProperties();
-            properties.setContentType("application/json");
-            properties.setHeader("a","1");
-            rabbitTemplate.setExchange("headersExchange");
-            rabbitTemplate.send("", converter.toMessage("hello.headers.one.key", properties));
-        }
-
-        public void sentToMapkeyWhereAll() {
-            MessageProperties properties = new MessageProperties();
-            properties.setContentType("application/json");
-            properties.setHeader("b","2");
-            rabbitTemplate.setExchange("headersExchange");
-            rabbitTemplate.send("", converter.toMessage("hello.headers.mapkey.whereAll", properties));
+        @Scheduled(fixedDelay = 10000L)
+        public void send() throws InterruptedException {
+            rabbitTemplate.convertAndSend("abc", "hello.direct");
         }
     }
 }

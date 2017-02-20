@@ -30,10 +30,10 @@ public class AmqpConfig {
         return new Queue("hpvm.data",true);
     }
 
-    @Bean
-    public Queue fooQueueB() {
-        return new Queue("hpvm.data.B",true);
-    }
+//    @Bean
+//    public Queue fooQueueB() {
+//        return new Queue("hpvm.data.B",true);
+//    }
 
 }
 
